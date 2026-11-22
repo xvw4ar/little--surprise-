@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b1b">
+<title>A Little Universe For You</title>
+<style>
+:root{
+  --bg:#070a18;--panel:rgba(14,20,49,.82);--panel2:rgba(20,26,59,.72);
+  --cyan:#73eaff;--blue:#7699ff;--pink:#d88be9;--lav:#c9b8ff;
+  --text:#e7e9ff;--muted:#9ca9d2;--line:rgba(132,161,255,.23);
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.12;background:repeating-linear-gradient(to bottom,transparent 0 3px,rgba(170,195,255,.12) 4px,transparent 5px)}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:4;background:radial-gradient(ellipse at 50% 35%,transparent 20%,rgba(0,0,0,.32) 100%)}
+button{font:inherit}
+a{color:inherit}
+.boot{position:fixed;inset:0;z-index:20;background:#050713;display:grid;place-items:center;padding:24px;transition:opacity .8s,visibility .8s}
+.boot.hidden{opacity:0;visibility:hidden}
+.bootbox{width:min(680px,100%);border:1px solid rgba(115,234,255,.35);background:rgba(9,16,38,.9);padding:clamp(22px,5vw,42px);box-shadow:0 0 55px rgba(80,120,255,.12);font:13px/1.9 var(--mono)}
+.boot-title{color:var(--cyan);letter-spacing:.22em;font-size:clamp(17px,4vw,24px);margin-bottom:22px}
+.bootline{color:#aebbe0}.bootline b{color:var(--pink);font-weight:400}
+.bootbar{height:4px;background:#202a4d;margin:22px 0 14px;overflow:hidden}
+.bootbar span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));animation:load 2.3s ease forwards}
+@keyframes load{to{width:100%}}
+.enter{border:1px solid var(--cyan);background:transparent;color:var(--cyan);padding:11px 18px;letter-spacing:.12em;cursor:pointer;margin-top:8px}
+.enter:hover{background:rgba(115,234,255,.1)}
+main{opacity:0;transition:opacity 1s}
+main.ready{opacity:1}
+.topbar{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;justify-content:space-between;gap:12px;padding:22px clamp(18px,5vw,64px);font:11px var(--mono);letter-spacing:.16em;color:#9baedc}
+.topbar span:last-child{color:var(--pink)}
+.hero{min-height:100svh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 20px 80px;background:radial-gradient(ellipse at 50% 38%,#22275b 0%,#101735 37%,#080d20 72%,#070a18 100%)}
+.stars,.stars:before,.stars:after{position:absolute;inset:0;content:"";background-image:radial-gradient(1px 1px at 12% 20%,#dceaff 50%,transparent 60%),radial-gradient(1.5px 1.5px at 72% 15%,#a7eaff 50%,transparent 60%),radial-gradient(1px 1px at 85% 48%,#fff 50%,transparent 60%),radial-gradient(1px 1px at 24% 64%,#d8c7ff 50%,transparent 60%),radial-gradient(1px 1px at 58% 75%,#fff 50%,transparent 60%),radial-gradient(1px 1px at 40% 32%,#a7eaff 50%,transparent 60%);background-size:390px 310px;opacity:.55;animation:drift 70s linear infinite}
+.stars:before{transform:scale(1.4);opacity:.3;animation-duration:100s}
+.stars:after{transform:scale(.8);opacity:.3;animation-duration:55s}
+@keyframes drift{to{transform:translate3d(-35px,28px,0)}}
+.orbit{position:absolute;width:min(78vw,680px);aspect-ratio:1;border:1px solid rgba(126,173,255,.14);border-radius:50%;top:8%;left:50%;transform:translateX(-50%);box-shadow:0 0 55px rgba(104,126,255,.06)}
+.planet{position:absolute;border-radius:50%;filter:drop-shadow(0 0 22px rgba(119,157,255,.3));animation:float 9s ease-in-out infinite}
+.planet.one{width:clamp(90px,17vw,170px);height:clamp(90px,17vw,170px);right:12%;top:17%;background:radial-gradient(circle at 32% 28%,#f1dfff,#a18bd7 35%,#4b4d91 68%,#20254d 100%);box-shadow:inset -18px -12px 30px #111632}
+.planet.two{width:clamp(35px,7vw,68px);height:clamp(35px,7vw,68px);left:13%;top:31%;background:radial-gradient(circle at 35% 30%,#b9f4ff,#668fbd 60%,#26365f);animation-delay:-3s}
+.planet.three{width:clamp(20px,4vw,38px);height:clamp(20px,4vw,38px);left:25%;top:16%;background:radial-gradient(circle at 30% 30%,#f8caff,#a56bbd 60%,#453b70);animation-delay:-5s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-17px)}}
+.hero-content{position:relative;z-index:2;max-width:850px}
+.eyebrow{font:11px var(--mono);letter-spacing:.25em;color:var(--cyan);text-transform:uppercase}
+h1{font-size:clamp(36px,7vw,76px);font-weight:500;letter-spacing:.035em;line-height:1.08;margin:22px 0;color:#f0edff;text-shadow:0 0 30px rgba(159,154,255,.2)}
+.hero-sub{font:clamp(12px,2vw,15px) var(--mono);color:#aab8df;letter-spacing:.1em;line-height:1.9}
+.cursor{display:inline-block;width:8px;height:1em;background:var(--cyan);vertical-align:middle;margin-left:5px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.scrollhint{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);font:10px var(--mono);letter-spacing:.22em;color:#8091bf}
+.city{height:390px;position:relative;overflow:hidden;background:linear-gradient(180deg,#0b1025 0%,#11142c 50%,#090b19 100%);border-top:1px solid rgba(120,160,255,.18)}
+.city:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(102,88,180,.22),transparent 58%),linear-gradient(0deg,rgba(4,7,18,.8),transparent 70%)}
+.citylabel{position:absolute;z-index:2;top:24px;left:clamp(18px,5vw,64px);font:11px var(--mono);letter-spacing:.2em;color:var(--pink)}
+.skyline{position:absolute;bottom:0;left:0;right:0;height:82%;display:flex;align-items:flex-end;gap:5px;justify-content:space-around;padding:0 1%}
+.building{position:relative;flex:1;max-width:110px;height:var(--h);background:linear-gradient(90deg,#111a38,#20264b 50%,#11172f);border:1px solid rgba(123,157,255,.16);box-shadow:inset 0 0 18px rgba(92,119,255,.08)}
+.building:before{content:"";position:absolute;inset:12px 8px;background:repeating-linear-gradient(0deg,transparent 0 13px,rgba(115,234,255,.55) 14px 16px,transparent 17px 26px),repeating-linear-gradient(90deg,transparent 0 12px,rgba(216,139,233,.35) 13px 15px,transparent 16px 25px);opacity:.55}
+.building:after{content:"";position:absolute;top:-18px;left:50%;height:18px;border-left:1px solid rgba(115,234,255,.4)}
+.neon-sign{position:absolute;top:30%;left:50%;transform:translateX(-50%);font:9px var(--mono);color:var(--cyan);text-shadow:0 0 9px var(--cyan);white-space:nowrap;opacity:.8}
+.horizon{position:absolute;bottom:0;height:34px;left:0;right:0;background:#080a16;box-shadow:0 -10px 35px rgba(101,115,255,.13)}
+.section{position:relative;padding:clamp(64px,9vw,110px) 18px;background:linear-gradient(180deg,#090c1d,#0b1024 55%,#090c1d)}
+.wrap{width:min(900px,100%);margin:auto}
+.section-tag{font:11px var(--mono);letter-spacing:.2em;color:var(--cyan);margin-bottom:18px}
+.window{border:1px solid rgba(126,160,255,.34);background:linear-gradient(135deg,rgba(24,31,72,.88),rgba(10,15,38,.94));box-shadow:0 15px 60px rgba(0,0,0,.25),0 0 35px rgba(103,120,255,.08);position:relative;overflow:hidden}
+.window:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 0 35%,rgba(175,194,255,.035) 48%,transparent 60%)}
+.windowbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 17px;border-bottom:1px solid var(--line);font:10px var(--mono);letter-spacing:.14em;color:#9aabd4;background:rgba(4,8,23,.25)}
+.dots{display:flex;gap:6px}.dots i{width:7px;height:7px;border-radius:50%;background:#7d8fca;opacity:.7}
+.windowbody{padding:clamp(20px,5vw,42px)}
+.codehead{font:clamp(11px,2vw,14px) var(--mono);color:var(--cyan);letter-spacing:.14em;margin-bottom:24px}
+.letter-title{font-size:clamp(23px,4vw,36px);font-weight:500;margin:0 0 25px;color:#f0eaff}
+.letter{font-size:clamp(15px,2vw,17px);line-height:1.95;color:#d7ddf5;white-space:pre-line;min-height:200px}
+.letter p{margin:0 0 19px}
+.signature{font:italic 22px Georgia,serif;color:var(--lav);margin-top:28px;text-align:right}
+.music-window{max-width:800px;margin:auto}
+.music-top{display:flex;gap:22px;align-items:center}
+.album{width:clamp(90px,18vw,140px);aspect-ratio:1;border-radius:18px;background:radial-gradient(circle at 50% 45%,#f5e9ff 0 17%,#c9a8ff 18% 26%,#685da8 44%,#171c43 75%);box-shadow:0 0 35px rgba(183,151,255,.2);flex-shrink:0;position:relative}
+.album:after{content:"";position:absolute;inset:12%;border:1px solid rgba(255,255,255,.18);border-radius:50%}
+.trackinfo{min-width:0}
+.now{font:11px var(--mono);letter-spacing:.2em;color:var(--cyan);margin-bottom:12px}
+.trackname{font-size:clamp(19px,3.5vw,29px);font-weight:600;line-height:1.25}
+.artist{font-size:clamp(13px,2vw,17px);color:#9eacd1;margin-top:8px}
+.player-controls{display:flex;align-items:center;gap:17px;margin-top:28px}
+.play{width:62px;height:62px;border:0;border-radius:50%;background:var(--cyan);color:#07101e;font-size:23px;cursor:pointer;box-shadow:0 0 24px rgba(115,234,255,.18);flex-shrink:0}
+.play:hover{filter:brightness(1.08)}
+.progress-area{flex:1;min-width:0}
+.progress{width:100%;accent-color:var(--cyan);cursor:pointer}
+.time{display:flex;justify-content:space-between;color:#aab5d6;font:12px var(--mono);margin-top:5px}
+.song-caption{text-align:center;font:italic clamp(20px,4vw,34px)/1.4 Georgia,serif;color:#cbbdf2;margin:36px 0 0}
+.footer{padding:45px 20px 65px;text-align:center;background:#070a17;color:#8493bd;font:10px var(--mono);letter-spacing:.16em}
+.footer strong{display:block;color:var(--pink);font-weight:400;margin-top:12px}
+.secret{margin-top:24px;border:1px solid rgba(115,234,255,.22);background:transparent;color:#8194c4;padding:8px 12px;font:10px var(--mono);cursor:pointer}
+.secretmsg{display:none;margin:15px auto 0;max-width:460px;color:#c7b8ff;font:13px/1.8 var(--mono)}
+.secretmsg.show{display:block}
+@media(max-width:560px){
+ .topbar{font-size:9px;padding:17px 15px}.planet.one{right:5%;top:18%}.planet.two{left:5%}
+ .city{height:300px}.skyline{gap:3px}.building:nth-child(2n){opacity:.78}
+ .music-top{gap:15px}.play{width:54px;height:54px}.player-controls{gap:12px}
+ .windowbar{font-size:9px;padding:11px 12px}.letter{line-height:1.85}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="boot" id="boot">
+  <div class="bootbox">
+    <div class="boot-title">NIGHT CITY // PERSONAL ARCHIVE</div>
+    <div class="bootline">INITIALIZING BIRTHDAY.EXE <b>[OK]</b></div>
+    <div class="bootline">LOADING STAR SYSTEM <b>[OK]</b></div>
+    <div class="bootline">CONNECTING TO A VERY SPECIAL PERSON <b>[OK]</b></div>
+    <div class="bootbar"><span></span></div>
+    <div class="bootline" id="bootstatus">Preparing your little universe...</div>
+    <button class="enter" id="enter">[ ENTER THE UNIVERSE ]</button>
+  </div>
+</div>
+<main id="main">
+  <header class="topbar"><span>NC // PERSONAL ARCHIVE</span><span>CONNECTION: <b style="color:#8df0ff">STABLE</b></span></header>
+  <section class="hero">
+    <div class="stars"></div><div class="orbit"></div>
+    <div class="planet one"></div><div class="planet two"></div><div class="planet three"></div>
+    <div class="hero-content">
+      <div class="eyebrow">✦ A TRANSMISSION FROM MY UNIVERSE ✦</div>
+      <h1 id="heroTitle"></h1>
+      <div class="hero-sub" id="heroSub"></div>
+    </div>
+    <div class="scrollhint">SCROLL TO EXPLORE&nbsp; ↓</div>
+  </section>
+  <section class="city" aria-label="Futuristic city skyline">
+    <div class="citylabel">SECTOR 07 // NIGHT CITY</div>
+    <div class="skyline">
+      <div class="building" style="--h:48%"></div><div class="building" style="--h:72%"><span class="neon-sign">NOVA</span></div>
+      <div class="building" style="--h:57%"></div><div class="building" style="--h:88%"><span class="neon-sign">2077</span></div>
+      <div class="building" style="--h:64%"></div><div class="building" style="--h:78%"><span class="neon-sign">LUMEN</span></div>
+      <div class="building" style="--h:51%"></div><div class="building" style="--h:68%"></div>
+      <div class="building" style="--h:83%"><span class="neon-sign">CITY</span></div><div class="building" style="--h:55%"></div>
+    </div><div class="horizon"></div>
+  </section>
+  <section class="section" id="letter">
+    <div class="wrap">
+      <div class="section-tag">01 // INCOMING MESSAGE</div>
+      <div class="window">
+        <div class="windowbar"><span>MESSAGE_TERMINAL.exe</span><span class="dots"><i></i><i></i><i></i></span><span>ENCRYPTED // 001</span></div>
+        <div class="windowbody">
+          <div class="codehead">root@nightcity:~$ open birthday_letter.txt</div>
+          <h2 class="letter-title">To my favorite person,</h2>
+          <div class="letter" id="letterText"></div>
+          <div class="signature" id="signature" style="opacity:0">With all my love ♡</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="song">
+    <div class="wrap">
+      <div class="section-tag">02 // AUDIO LINK</div>
+      <div class="window music-window">
+        <div class="windowbar"><span>MEDIA_PLAYER.exe</span><span>AUDIO LINK // 001</span></div>
+        <div class="windowbody">
+          <div class="music-top">
+            <div class="album"></div>
+            <div class="trackinfo">
+              <div class="now">NOW PLAYING</div>
+              <div class="trackname">Can’t Help Falling in Love</div>
+              <div class="artist">Elvis Presley · a song for you</div>
+            </div>
+          </div>
+          <div class="player-controls">
+            <button class="play" id="play" aria-label="Play music">▶</button>
+            <div class="progress-area">
+              <input class="progress" id="progress" type="range" min="0" max="100" value="0" aria-label="Song progress">
+              <div class="time"><span id="current">0:00</span><span id="duration">--:--</span></div>
+            </div>
+          </div>
+          <audio id="audio" preload="metadata">
+            <source src="assets/birthday-song.m4a" type="audio/mp4">
+          </audio>
+          <div class="song-caption">Take my hand, let's go to the moon together.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    END OF TRANSMISSION // MADE WITH LOVE
+    <strong>HAPPY BIRTHDAY ♡</strong>
+    <button class="secret" id="secret">[ DECRYPT HIDDEN FILE ]</button>
+    <div class="secretmsg" id="secretmsg">If the whole universe had a favorite person, I think it would choose you too. ✦</div>
+  </footer>
+</main>
+<script>
+const boot=document.getElementById('boot'), main=document.getElementById('main');
+document.getElementById('enter').addEventListener('click',()=>{
+  boot.classList.add('hidden');main.classList.add('ready');
+  typeText(document.getElementById('heroTitle'),'A LITTLE UNIVERSE FOR YOU',55,()=>{
+    typeText(document.getElementById('heroSub'),'one small world, made for someone extraordinary.',25);
+  });
+});
+function typeText(el,text,speed,done){
+  let i=0;el.textContent='';const cursor=document.createElement('span');cursor.className='cursor';el.appendChild(cursor);
+  const tick=()=>{if(i<text.length){cursor.before(document.createTextNode(text[i++]));setTimeout(tick,speed)}else{cursor.remove();if(done)done()}};
+  tick();
+}
+const paragraphs=[
+"On your birthday, I wish you years filled with happiness, surrounded by the people you love, a heart that never knows sadness, and days that are just as beautiful as your soul.",
+"I hope I get to see you achieve all your dreams and reach the place you truly deserve. I'll always cheer you on, support you and your beautiful ideas, and I'll always be proud of every effort you make.",
+"You're truly such a wonderful and special person to me. You have such a unique personality, and having you in my life gives me such a beautiful feeling.",
+"I wanted to make you something small that would make you smile, just like you always manage to make me smile with all the little things and tiny details you do for me.",
+"And finally, I want to tell you once again: happy birthday! I hope you enjoy your day and make beautiful memories, because today isn't just an ordinary day...",
+"Today is special because it's the day the most special person in my life was born. 🖐🏻💕"
+];
+const letterBox=document.getElementById('letterText'), signature=document.getElementById('signature');
+let letterStarted=false;
+const observer=new IntersectionObserver(entries=>{
+ if(entries.some(e=>e.isIntersecting)&&!letterStarted){letterStarted=true;typeParagraph(0);}
+},{threshold:.18});
+observer.observe(document.getElementById('letter'));
+function typeParagraph(index){
+ if(index>=paragraphs.length){signature.style.transition='opacity 1.2s';signature.style.opacity=1;return}
+ const p=document.createElement('p');letterBox.appendChild(p);let i=0;
+ function step(){if(i<paragraphs[index].length){p.textContent+=paragraphs[index][i++];setTimeout(step,17)}else{setTimeout(()=>typeParagraph(index+1),420)}}
+ step();
+}
+const audio=document.getElementById('audio'),play=document.getElementById('play'),progress=document.getElementById('progress');
+const current=document.getElementById('current'),duration=document.getElementById('duration');
+function fmt(s){if(!Number.isFinite(s))return'0:00';return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')}
+play.addEventListener('click',async()=>{
+ if(audio.paused){try{await audio.play();play.textContent='Ⅱ'}catch(e){play.textContent='▶';alert('The audio file could not be played. Check that birthday-song.m4a is inside the assets folder.')}}else{audio.pause();play.textContent='▶'}
+});
+audio.addEventListener('loadedmetadata',()=>duration.textContent=fmt(audio.duration));
+audio.addEventListener('timeupdate',()=>{current.textContent=fmt(audio.currentTime);if(Number.isFinite(audio.duration)&&audio.duration>0)progress.value=(audio.currentTime/audio.duration)*100});
+progress.addEventListener('input',()=>{if(Number.isFinite(audio.duration))audio.currentTime=(progress.value/100)*audio.duration});
+audio.addEventListener('ended',()=>play.textContent='▶');
+document.getElementById('secret').addEventListener('click',()=>document.getElementById('secretmsg').classList.toggle('show'));
+</script>
+</body>
+</html>
